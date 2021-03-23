@@ -1,0 +1,452 @@
+{
+	"info": {
+		"_postman_id": "47f5f8c8-05c1-4f68-90d8-aee97117750b",
+		"name": "WizelineChallenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get active task",
+			"item": [
+				{
+					"name": "Get active",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7b4f723c-cb94-4a3b-85fc-ee5a9617b7d0",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.success;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									" var jsonData = pm.response.json();\r",
+									"var name = pm.environment.get(\"projectname\");\r",
+									"pm.test(\"Task name is correct\", function () {\r",
+									"    pm.expect(jsonData.name).to.eql(name);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}",
+							"host": [
+								"{{baseURL}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Create a new task",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a09834fc-cec1-44fa-a5f7-745f60a948ab",
+								"exec": [
+									"pm.test(\"Status code is 2xx\", function () {\r",
+									"    pm.response.to.be.success;\r",
+									"});\r",
+									"\r",
+									" var jsonData = pm.response.json();\r",
+									"var name = pm.environment.get(\"projectname\");\r",
+									"pm.test(\"Project name is correct\", function () {\r",
+									"    pm.expect(jsonData.name).to.eql(name);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"projectId\", jsonData.id);\r",
+									"\r",
+									"pm.environment.set(\"order\", jsonData.order);\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-Id",
+								"value": "$(uuidgen)",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"{{taskname}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}",
+							"host": [
+								"{{baseURL}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get an ctive tasks",
+			"item": [
+				{
+					"name": "Get active task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "78546840-dc87-49cd-8c52-bc621bce6df5",
+								"exec": [
+									"pm.test(\"Status code is 2xx\", function () {\r",
+									"    pm.response.to.be.success;\r",
+									"});\r",
+									"\r",
+									" var jsonData = pm.response.json();\r",
+									"var name = pm.environment.get(\"projectname\");\r",
+									"pm.test(\"Project name is correct\", function () {\r",
+									"    pm.expect(jsonData.name).to.eql(name);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"projectId\", jsonData.id);\r",
+									"\r",
+									"pm.environment.set(\"order\", jsonData.order);\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/{{projectId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Update a task",
+			"item": [
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a82a55ab-4153-4c47-bf5b-0b30e2049840",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.be.success;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-Id",
+								"value": "$(uuidgen)",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Buy Milk and bread\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{projectId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Change a task status to complete",
+			"item": [
+				{
+					"name": "change status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0163d9d2-b2af-4962-89e2-1b64d071cb80",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.be.success;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-Id",
+								"value": "$(uuidgen)",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{projectId}}/close",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{projectId}}",
+								"close"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Reaopen a task",
+			"item": [
+				{
+					"name": "Reopen",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b48e6f79-d8e0-4efa-b6af-002347fe0b88",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.be.success;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/{{projectId}}/reopen",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{projectId}}",
+								"reopen"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Delete a task",
+			"item": [
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8d33b5aa-6492-4c75-be3a-ec4ef35d0f33",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.be.success;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/{{projectId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{tokenID}}",
+				"type": "string"
+			}
+		]
+	},
+	"protocolProfileBehavior": {}
+}
